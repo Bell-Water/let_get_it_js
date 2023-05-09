@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>숫자야구</title>
+</head>
+
+<body>
+	<form id="form">
+		<input type="text" id="input">
+		<button>확인</button>
+	</form>
+	<div id="logs"></div>
+	<script>
+		const $form = document.querySelector('#form');
+		const $input = document.querySelector('#input');
+		const $logs = document.querySelector('#logs');
+
+		const numbers = [1,2,3,4,5,6,7,8,9]; // 랜덤 푸시용
+		const answer = []; // 
+		const check = Array(10).fill(); // 유저가 이전에 입력한 것 모음
+
+		let count = 0;
+
+		// 정답 미리 설정
+		for(let i=0; i<4; i++) {
+			const index = Math.floor(Math.random() * numbers.length); 
+			answer.push(numbers[index]);
+			numbers.splice(index,1);
+		}
+
+		console.log(answer);
+
+		const checkInput = (nums) => {
+			
+			// 4글자 맞는지
+			if(nums.length != 4) {
+				return alert('4글자 입력해주세요');
+			}
+			// 이전에 입력됬었는지
+			if(check.includes(nums)) {
+				return alert('새로운 글자 입력해주세요');
+			}
+
+			// 4자 중 중복된 숫자 있는지 확인
+			if(new Set(nums).size != 4) {
+				return alert('중복되지 않게 입력해주세요');
+			}
+
+			return true;
+		}
+
+		// 유저 input eventListener 함수 생성, 등록
+		const onSubmit = (event) => {
+			event.preventDefault();
+			const curValue = $input.value;
+			console.log(curValue);
+			$input.value = '';
+			let ball = 0;
+			let strike = 0;
+
+			// input 적절한지 체크
+			if(checkInput(curValue)) {
+				if (answer.join('') === curValue) {
+					$logs.textContent = '홈런!';
+					return;
+				}
+				if (count >= 9) {
+					$logs.append('10번을 모두 사용하였습니다!');
+					return;
+				}
+
+				check.push(curValue); // check에 넣기
+				for(let i=0; i<4; i++) { // ball, check 체크
+					const temp = curValue.indexOf(answer[i]);
+					console.log(temp);
+					if(temp > -1) {
+						if(temp === i) {
+							strike+=1;
+						} else {
+							ball+=1;
+						}
+					}
+				}
+				count++;
+				$logs.append(`${ball} 볼 ${strike} 스트라이크 입니다!`, document.createElement('br'));
+			}
+		};
+
+		$form.addEventListener('submit', onSubmit);
+	</script>
+</body>
+</html>
+
