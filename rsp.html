@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>가위바위보</title>
+	<style>
+		#computer {
+			width: 142px;
+			height: 200px;
+		}
+	</style>
+</head>
+<body>
+	<div id="computer"></div>
+	<div>
+		<div id="scissors" class="btn">가위</div>
+		<div id="rock" class="btn">바위</div>
+		<div id="paper" class="btn">보</div>
+	</div>
+	<div id="score">0</div>
+	<script>
+		const $computer = document.querySelector('#computer');
+		const $score = document.querySelector('#score');
+		const $rock = document.querySelector('#rock');
+		const $scissors = document.querySelector('#scissors');
+		const $paper = document.querySelector('#paper');
+		const IMG_URL = './rsp.png';
+		$computer.style.background = `url(${IMG_URL}) 0 0`; // 가위
+		$computer.style.backgroundSize = 'auto 200px';
+		
+		// $computer.style.background = `url(${IMG_URL}) -220px 0`; // 바위
+		// $computer.style.background = `url(${IMG_URL}) -440px 0`; // 보
+		const rspX = {
+			scissors: '0', // 가위
+			rock: '-220px', // 바위
+			paper: '-440px' // 보
+		};
+
+		let computerChoice = 'scissors';
+		const changeComputerHand = () => {
+			if(comupterChoice === 'rock') {
+				computerChoice = 'scissors';
+			} else if (computerChoice === 'scissors') {
+				computerChoice = 'paper';
+			} else if(computerChoice === 'paper') {
+				computerChoice = 'rock';
+			}
+			$computer.style.background = `url(${IMG_URL}) ${rspX[computerChoice]} 0`;
+			$computer.style.backgroundSize = 'auto 200px';
+		}
+		setInterval(changeComputerHand, 50);
+
+
+		
+	</script>
+
+
+</body>
+</html>
